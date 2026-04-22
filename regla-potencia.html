@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Regla de la Potencia — Ejercicios</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,700;1,300&family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f13;
+    --surface: #17171e;
+    --card: #1e1e28;
+    --border: #2e2e3e;
+    --text: #e8e4f0;
+    --muted: #7a7590;
+    --accent: #a78bfa;
+    --accent2: #f472b6;
+    --green: #34d399;
+    --orange: #fb923c;
+    --red: #f87171;
+    --gold: #fbbf24;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .hero {
+    padding: 4rem 2rem 3rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: 50%;
+    transform: translateX(-50%);
+    width: 500px; height: 300px;
+    background: radial-gradient(ellipse, rgba(167,139,250,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(167,139,250,0.1);
+    border: 1px solid rgba(167,139,250,0.3);
+    padding: 0.3rem 1rem;
+    border-radius: 20px;
+    margin-bottom: 1.2rem;
+  }
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 700;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #e8e4f0 30%, var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.8rem;
+  }
+  .hero-formula {
+    font-family: 'Fraunces', serif;
+    font-size: 1.8rem;
+    font-style: italic;
+    color: var(--accent);
+    margin: 1rem 0 0.5rem;
+    opacity: 0.9;
+  }
+  .hero p {
+    color: var(--muted);
+    font-size: 1rem;
+    font-weight: 300;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* CONTENEDOR */
+  .wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1.5rem 4rem;
+  }
+
+  /* REPASO RÁPIDO */
+  .recap {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.8rem 2rem;
+    margin-bottom: 3rem;
+  }
+  .recap-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+  .recap-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 0.8rem;
+  }
+  .recap-item {
+    background: var(--surface);
+    border-radius: 8px;
+    padding: 0.7rem 1rem;
+    border-left: 3px solid var(--accent);
+  }
+  .recap-item code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88rem;
+    color: var(--text);
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+  .recap-item small {
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  /* SECCIÓN NIVEL */
+  .level-section {
+    margin-bottom: 2.5rem;
+  }
+  .level-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .level-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 0.3rem 0.9rem;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+  .badge-easy   { background: rgba(52,211,153,0.15); color: var(--green);  border: 1px solid rgba(52,211,153,0.3); }
+  .badge-mid    { background: rgba(251,146,60,0.15);  color: var(--orange); border: 1px solid rgba(251,146,60,0.3); }
+  .badge-hard   { background: rgba(248,113,113,0.15); color: var(--red);   border: 1px solid rgba(248,113,113,0.3); }
+  .level-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.3rem;
+    font-weight: 300;
+    color: var(--text);
+  }
+  .level-count {
+    margin-left: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  /* GRID DE EJERCICIOS */
+  .ex-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 0.9rem;
+  }
+  .ex-grid.single { grid-template-columns: 1fr; }
+
+  /* TARJETA */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.2rem 1.4rem;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+  .card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .card-top {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.8rem;
+  }
+  .ex-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 5px;
+    letter-spacing: 1px;
+    font-weight: 600;
+  }
+  .num-easy { background: rgba(52,211,153,0.15); color: var(--green); }
+  .num-mid  { background: rgba(251,146,60,0.15);  color: var(--orange); }
+  .num-hard { background: rgba(248,113,113,0.15); color: var(--red); }
+
+  .ex-type {
+    font-size: 0.75rem;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .ex-func {
+    font-family: 'Fraunces', serif;
+    font-size: 1.25rem;
+    font-style: italic;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+  .ex-hint {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 0.8rem;
+  }
+
+  /* BOTÓN */
+  .reveal-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 1px;
+    padding: 0.35rem 0.9rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+  .reveal-btn:hover, .reveal-btn.active {
+    background: rgba(167,139,250,0.1);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* RESPUESTA */
+  .answer-block {
+    display: none;
+    margin-top: 0.9rem;
+    border-top: 1px solid var(--border);
+    padding-top: 0.9rem;
+  }
+  .answer-block.open { display: block; }
+  .ans-result {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.95rem;
+    color: var(--green);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  .ans-explain {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.6;
+    background: var(--surface);
+    border-radius: 6px;
+    padding: 0.6rem 0.9rem;
+    border-left: 2px solid var(--accent);
+  }
+  .ans-explain strong { color: var(--text); }
+
+  /* PROGRESO */
+  .progress-bar-wrap {
+    background: var(--surface);
+    border-radius: 20px;
+    height: 6px;
+    margin: 2rem 0 2.5rem;
+    overflow: hidden;
+  }
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 20px;
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+  .progress-label {
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--muted);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border);
+    font-style: italic;
+  }
+
+  @media (max-width: 580px) {
+    .ex-grid { grid-template-columns: 1fr; }
+    .hero { padding: 2.5rem 1rem 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-tag">Cálculo diferencial</div>
+  <h1>Regla de la Potencia</h1>
+  <div class="hero-formula">d/dx [xⁿ] = n · xⁿ⁻¹</div>
+  <p>30 ejercicios graduados: básicos, intermedios y avanzados con explicación.</p>
+</div>
+
+<div class="wrap">
+
+  <!-- REPASO -->
+  <div class="recap">
+    <div class="recap-title">⚡ Casos que debes dominar</div>
+    <div class="recap-grid">
+      <div class="recap-item">
+        <code>xⁿ → n·xⁿ⁻¹</code>
+        <small>Forma estándar</small>
+      </div>
+      <div class="recap-item">
+        <code>√x = x^½ → ½x^(-½)</code>
+        <small>Raíces como potencias</small>
+      </div>
+      <div class="recap-item">
+        <code>1/xⁿ = x^(-n) → -n·x^(-n-1)</code>
+        <small>Fracciones como potencias negativas</small>
+      </div>
+      <div class="recap-item">
+        <code>[u(x)]ⁿ → n·uⁿ⁻¹·u'</code>
+        <small>Potencia con función interior (cadena)</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROGRESO -->
+  <div class="progress-label" id="progLabel">0 / 30 resueltos</div>
+  <div class="progress-bar-wrap"><div class="progress-bar" id="progBar"></div></div>
+
+  <!-- BÁSICOS -->
+  <div class="level-section">
+    <div class="level-header">
+      <span class="level-badge badge-easy">Básico</span>
+      <span class="level-title">Potencias directas</span>
+      <span class="level-count">Ej. 1–10</span>
+    </div>
+    <div class="ex-grid" id="easy"></div>
+  </div>
+
+  <!-- INTERMEDIOS -->
+  <div class="level-section">
+    <div class="level-header">
+      <span class="level-badge badge-mid">Intermedio</span>
+      <span class="level-title">Raíces, fracciones y polinomios</span>
+      <span class="level-count">Ej. 11–20</span>
+    </div>
+    <div class="ex-grid" id="mid"></div>
+  </div>
+
+  <!-- DIFÍCILES -->
+  <div class="level-section">
+    <div class="level-header">
+      <span class="level-badge badge-hard">Avanzado</span>
+      <span class="level-title">Potencia + cadena y combinaciones</span>
+      <span class="level-count">Ej. 21–30</span>
+    </div>
+    <div class="ex-grid" id="hard"></div>
+  </div>
+
+</div>
+
+<div class="footer">Regla de la potencia · Cálculo diferencial</div>
+
+<script>
+const data = {
+  easy: [
+    { n:1,  func:"f(x) = x⁸",           hint:"Baja el 8 y resta 1 al exponente",         ans:"f '(x) = 8x⁷" },
+    { n:2,  func:"f(x) = x³",            hint:"Forma directa xⁿ → nxⁿ⁻¹",               ans:"f '(x) = 3x²" },
+    { n:3,  func:"f(x) = x",             hint:"x = x¹, aplica la regla",                  ans:"f '(x) = 1" },
+    { n:4,  func:"f(x) = x¹⁰",           hint:"Baja el 10",                               ans:"f '(x) = 10x⁹" },
+    { n:5,  func:"f(x) = 5x⁴",           hint:"La constante 5 sale como factor",           ans:"f '(x) = 20x³" },
+    { n:6,  func:"f(x) = −3x²",          hint:"Constante negativa sale como factor",       ans:"f '(x) = −6x" },
+    { n:7,  func:"f(x) = 7x⁶ + 2x",     hint:"Deriva cada término por separado",          ans:"f '(x) = 42x⁵ + 2" },
+    { n:8,  func:"f(x) = x⁰·⁵",         hint:"n = 0.5, aplica la regla normalmente",      ans:"f '(x) = 0.5x⁻⁰·⁵" },
+    { n:9,  func:"f(x) = 4x³ − x + 9",  hint:"El 9 es constante, su derivada es 0",      ans:"f '(x) = 12x² − 1" },
+    { n:10, func:"f(x) = x¹²",           hint:"Forma estándar",                            ans:"f '(x) = 12x¹¹" },
+  ],
+  mid: [
+    { n:11, func:"f(x) = √x",             hint:"Reescribe como x^(1/2)",                  ans:"f '(x) = 1/(2√x)" },
+    { n:12, func:"f(x) = x^(2/3)",        hint:"n = 2/3 → (2/3)x^(−1/3)",               ans:"f '(x) = (2/3)x^(−1/3)" },
+    { n:13, func:"f(x) = 1/x",            hint:"Reescribe como x⁻¹",                      ans:"f '(x) = −1/x²" },
+    { n:14, func:"f(x) = 1/x⁴",           hint:"Reescribe como x⁻⁴",                     ans:"f '(x) = −4/x⁵" },
+    { n:15, func:"f(x) = ∛x²",            hint:"Reescribe como x^(2/3)",                  ans:"f '(x) = (2/3)x^(−1/3)" },
+    { n:16, func:"f(x) = 3/x²",           hint:"3x⁻², saca la constante",                ans:"f '(x) = −6/x³" },
+    { n:17, func:"f(x) = 2x^(5/2)",       hint:"Constante × potencia fraccionaria",       ans:"f '(x) = 5x^(3/2) = 5x√x" },
+    { n:18, func:"f(x) = x⁵ − 3x³ + 2x² − 7", hint:"Deriva término a término",          ans:"f '(x) = 5x⁴ − 9x² + 4x" },
+    { n:19, func:"f(x) = (x² + 1)/x",     hint:"Divide: x + x⁻¹, luego deriva",         ans:"f '(x) = 1 − 1/x²" },
+    { n:20, func:"f(x) = √x + 1/√x",      hint:"x^(1/2) + x^(−1/2), deriva cada uno",   ans:"f '(x) = 1/(2√x) − 1/(2x^(3/2))" },
+  ],
+  hard: [
+    {
+      n:21, func:"f(x) = (x² + 3)⁴",
+      hint:"Potencia con interior: regla de la cadena",
+      ans:"f '(x) = 4(x²+3)³ · 2x = 8x(x²+3)³",
+      explain:"Se aplica la <strong>regla de la cadena</strong>: primero deriva la potencia exterior (baja el 4, resta 1), dejando el interior intacto, y luego multiplica por la derivada del interior (2x)."
+    },
+    {
+      n:22, func:"f(x) = (3x − 1)⁵",
+      hint:"Potencia elevada con función lineal interior",
+      ans:"f '(x) = 5(3x−1)⁴ · 3 = 15(3x−1)⁴",
+      explain:"Cadena: baja el 5, interior intacto, multiplica por la derivada del interior (3). Recuerda que la derivada de 3x−1 es simplemente 3."
+    },
+    {
+      n:23, func:"f(x) = √(x² + 1)",
+      hint:"Reescribe como (x²+1)^(1/2) y aplica cadena",
+      ans:"f '(x) = x / √(x²+1)",
+      explain:"(x²+1)^(1/2) → (1/2)(x²+1)^(−1/2) · 2x. Los 2 se cancelan y queda x·(x²+1)^(−1/2) = x/√(x²+1)."
+    },
+    {
+      n:24, func:"f(x) = (1 − x³)⁷",
+      hint:"Interior: 1−x³, su derivada es −3x²",
+      ans:"f '(x) = 7(1−x³)⁶ · (−3x²) = −21x²(1−x³)⁶",
+      explain:"Cadena: baja el 7 y multiplica por la derivada del interior (−3x²). El signo negativo viene del −x³."
+    },
+    {
+      n:25, func:"f(x) = (x + 1/x)³",
+      hint:"Interior: x + x⁻¹, derivada del interior: 1 − 1/x²",
+      ans:"f '(x) = 3(x + 1/x)² · (1 − 1/x²)",
+      explain:"Interior u = x + x⁻¹, su derivada es u' = 1 − x⁻² = 1 − 1/x². Cadena: 3u² · u'. No simplificamos más para dejar visible la estructura."
+    },
+    {
+      n:26, func:"f(x) = (2x² − 5x)⁴",
+      hint:"Interior: 2x²−5x, derivada: 4x−5",
+      ans:"f '(x) = 4(2x²−5x)³ · (4x−5)",
+      explain:"Cadena directa. Derivada del interior 2x²−5x es 4x−5. Resultado: 4·(interior)³·(derivada interior)."
+    },
+    {
+      n:27, func:"f(x) = x² · (x+1)³",
+      hint:"Producto de x² y (x+1)³. (x+1)³ requiere cadena",
+      ans:"f '(x) = 2x(x+1)³ + 3x²(x+1)²",
+      explain:"<strong>Producto + cadena combinados.</strong> f=x², g=(x+1)³. f'=2x. g'=3(x+1)²·1. Resultado: f'g + fg' = 2x(x+1)³ + x²·3(x+1)². Se puede factorizar: x(x+1)²(2(x+1)+3x) = x(x+1)²(5x+2)."
+    },
+    {
+      n:28, func:"f(x) = [(x²+1)/(x−1)]²",
+      hint:"Potencia de un cociente: cadena con interior complejo",
+      ans:"f '(x) = 2·[(x²+1)/(x−1)] · [(2x(x−1)−(x²+1))/(x−1)²]",
+      explain:"<strong>Tres reglas combinadas.</strong> Cadena: baja el 2, queda 2·[interior]¹, multiplica por derivada del interior (que es un cociente). Cociente: (f'g−fg')/g² con f=x²+1, g=x−1. Numerador del cociente: 2x(x−1)−(x²+1) = x²−2x−1."
+    },
+    {
+      n:29, func:"f(x) = (√x + x)²",
+      hint:"Interior: √x + x = x^(1/2)+x. Expande o usa cadena",
+      ans:"f '(x) = (1+2√x+2x) / √x  →  simplificado: (√x+1)(1+2√x)/√x",
+      explain:"Dos enfoques: (1) Expandir (√x+x)² = x+2x^(3/2)+x² y derivar término a término: 1+3x^(1/2)+2x. (2) Cadena: 2(√x+x)·(1/(2√x)+1). Ambos llegan al mismo resultado. El enfoque (1) suele ser más limpio aquí."
+    },
+    {
+      n:30, func:"f(x) = (x^(1/3) + x^(−1/3))⁴",
+      hint:"Interior: u = x^(1/3) + x^(−1/3), calcula u' primero",
+      ans:"f '(x) = 4(x^(1/3)+x^(−1/3))³ · (1/3)(x^(−2/3)−x^(−4/3))",
+      explain:"<strong>Potencia + cadena con exponentes fraccionarios.</strong> u = x^(1/3)+x^(−1/3), u' = (1/3)x^(−2/3) + (−1/3)x^(−4/3) = (1/3)(x^(−2/3)−x^(−4/3)). Resultado: 4u³·u'. Se puede factorizar u' como (1/3)x^(−4/3)(x^(2/3)−1)."
+    },
+  ]
+};
+
+let revealed = 0;
+
+function build(level, containerId, cls) {
+  const container = document.getElementById(containerId);
+  data[level].forEach(ex => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.innerHTML = `
+      <div class="card-top">
+        <span class="ex-num num-${cls}">Ej. ${ex.n}</span>
+        <span class="ex-type">${ex.hint.split(' ').slice(0,3).join(' ')}…</span>
+      </div>
+      <div class="ex-func">${ex.func}</div>
+      <div class="ex-hint">💬 ${ex.hint}</div>
+      <button class="reveal-btn" onclick="toggle(this)">Ver respuesta</button>
+      <div class="answer-block">
+        <div class="ans-result">✓ ${ex.ans}</div>
+        ${ex.explain ? `<div class="ans-explain">📖 ${ex.explain}</div>` : ''}
+      </div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+build('easy', 'easy', 'easy');
+build('mid',  'mid',  'mid');
+build('hard', 'hard', 'hard');
+
+function toggle(btn) {
+  const block = btn.nextElementSibling;
+  const opening = !block.classList.contains('open');
+  block.classList.toggle('open');
+  btn.classList.toggle('active');
+  btn.textContent = opening ? 'Ocultar' : 'Ver respuesta';
+  if (opening) {
+    revealed++;
+    updateProgress();
+  } else {
+    revealed = Math.max(0, revealed - 1);
+    updateProgress();
+  }
+}
+
+function updateProgress() {
+  const pct = Math.round((revealed / 30) * 100);
+  document.getElementById('progBar').style.width = pct + '%';
+  document.getElementById('progLabel').textContent = `${revealed} / 30 resueltos`;
+}
+</script>
+</body>
+</html>
