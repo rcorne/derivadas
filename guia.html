@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía de Derivadas</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1208;
+    --paper: #faf7f0;
+    --aged: #f0ead8;
+    --accent: #c0392b;
+    --gold: #b8860b;
+    --muted: #7a6a50;
+    --rule: #d4c9a8;
+    --highlight: #fff3cd;
+    --green: #1a6b3a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    line-height: 1.7;
+    padding: 0 1rem;
+  }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    padding: 3rem 1rem 2rem;
+    border-bottom: 3px double var(--rule);
+    margin-bottom: 3rem;
+    position: relative;
+  }
+  .header::before {
+    content: '∂';
+    position: absolute;
+    top: 1rem; left: 1.5rem;
+    font-size: 5rem;
+    color: var(--rule);
+    font-family: 'Playfair Display', serif;
+    line-height: 1;
+  }
+  .header::after {
+    content: '∞';
+    position: absolute;
+    top: 1rem; right: 1.5rem;
+    font-size: 5rem;
+    color: var(--rule);
+    font-family: 'Playfair Display', serif;
+    line-height: 1;
+  }
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.2rem;
+    font-weight: 700;
+    letter-spacing: -1px;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+  .header .subtitle {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+  }
+
+  /* CONTENEDOR */
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  /* SECCIONES */
+  .section {
+    margin-bottom: 3rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--ink);
+    border-bottom: 2px solid var(--rule);
+    padding-bottom: 0.4rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .section-num {
+    background: var(--accent);
+    color: white;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  /* DEFINICIÓN */
+  .definition-box {
+    background: var(--aged);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 6px 6px 0;
+    padding: 1.5rem 2rem;
+    margin: 1.5rem 0;
+    position: relative;
+  }
+  .definition-box .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+  }
+  .formula-big {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--ink);
+    text-align: center;
+    padding: 0.8rem;
+    background: rgba(255,255,255,0.6);
+    border-radius: 4px;
+    margin: 0.8rem 0;
+    font-style: italic;
+  }
+
+  /* REGLAS */
+  .rules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  .rule-card {
+    background: white;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 1.2rem 1.4rem;
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+  .rule-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    border-color: var(--gold);
+  }
+  .rule-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  .rule-formula {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.92rem;
+    background: var(--aged);
+    padding: 0.5rem 0.8rem;
+    border-radius: 4px;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+  .rule-example {
+    font-size: 0.88rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+  .rule-example span {
+    color: var(--green);
+    font-style: normal;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+  }
+
+  /* EJEMPLOS RESUELTOS */
+  .solved-example {
+    background: white;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 1.4rem 1.8rem;
+    margin: 1rem 0;
+  }
+  .solved-example .ex-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    margin-bottom: 0.6rem;
+  }
+  .solved-example .ex-func {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-style: italic;
+    color: var(--ink);
+    margin-bottom: 0.8rem;
+  }
+  .step {
+    display: flex;
+    gap: 0.8rem;
+    align-items: flex-start;
+    padding: 0.4rem 0;
+    border-bottom: 1px dashed var(--rule);
+  }
+  .step:last-child { border-bottom: none; }
+  .step-num {
+    background: var(--ink);
+    color: white;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    min-width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+  .step-text {
+    font-size: 0.95rem;
+    color: var(--ink);
+    flex: 1;
+  }
+  .step-text code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88rem;
+    background: var(--aged);
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+  }
+  .result-box {
+    background: var(--highlight);
+    border: 1px solid #f0c040;
+    border-radius: 4px;
+    padding: 0.6rem 1rem;
+    margin-top: 0.8rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  /* EJERCICIOS */
+  .exercises-intro {
+    background: var(--aged);
+    border-radius: 8px;
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+    color: var(--muted);
+    border: 1px solid var(--rule);
+  }
+
+  .ex-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 0.9rem;
+  }
+
+  .exercise {
+    background: white;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 1.1rem 1.3rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .exercise:hover {
+    border-color: var(--accent);
+    box-shadow: 0 2px 12px rgba(192,57,43,0.1);
+  }
+  .ex-header {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin-bottom: 0.5rem;
+  }
+  .ex-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    background: var(--ink);
+    color: white;
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    letter-spacing: 1px;
+  }
+  .ex-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    background: var(--aged);
+    color: var(--muted);
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+  }
+  .ex-func-display {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-style: italic;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+  .ex-hint {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  /* RESPUESTA TOGGLE */
+  .toggle-btn {
+    background: none;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 0.3rem 0.8rem;
+    font-size: 0.78rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    cursor: pointer;
+    margin-top: 0.7rem;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .toggle-btn:hover {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
+  .answer {
+    display: none;
+    margin-top: 0.7rem;
+    padding: 0.6rem 0.9rem;
+    background: #eafaf1;
+    border-left: 3px solid var(--green);
+    border-radius: 0 4px 4px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    color: var(--green);
+    font-weight: 600;
+  }
+  .answer.show { display: block; }
+
+  /* DIFICULTAD */
+  .diff-1 .ex-num { background: #27ae60; }
+  .diff-2 .ex-num { background: #e67e22; }
+  .diff-3 .ex-num { background: var(--accent); }
+
+  /* LEYENDA */
+  .legend {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin: 1rem 0 1.5rem;
+    font-size: 0.85rem;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--muted);
+  }
+  .legend-dot {
+    width: 12px; height: 12px;
+    border-radius: 2px;
+  }
+
+  /* SEPARADOR */
+  .divider {
+    text-align: center;
+    margin: 2rem 0;
+    color: var(--rule);
+    font-size: 1.5rem;
+    letter-spacing: 8px;
+  }
+
+  /* TABLA DE DERIVADAS COMUNES */
+  .deriv-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.2rem 0;
+    font-size: 0.93rem;
+  }
+  .deriv-table th {
+    background: var(--ink);
+    color: white;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 0.6rem 1rem;
+    text-align: left;
+  }
+  .deriv-table td {
+    padding: 0.55rem 1rem;
+    border-bottom: 1px solid var(--rule);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88rem;
+  }
+  .deriv-table tr:nth-child(even) td { background: var(--aged); }
+  .deriv-table tr:hover td { background: var(--highlight); }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 2rem;
+    margin-top: 3rem;
+    border-top: 3px double var(--rule);
+    color: var(--muted);
+    font-style: italic;
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 600px) {
+    .header h1 { font-size: 2rem; }
+    .header::before, .header::after { display: none; }
+    .rules-grid, .ex-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ENCABEZADO -->
+  <div class="header">
+    <h1>Guía de Derivadas</h1>
+    <p class="subtitle">Teoría completa · Reglas esenciales · 30 ejercicios graduados</p>
+  </div>
+
+  <!-- SECCIÓN 1: QUÉ ES UNA DERIVADA -->
+  <div class="section">
+    <h2 class="section-title"><span class="section-num">I</span> ¿Qué es una derivada?</h2>
+    <p>La <strong>derivada</strong> de una función mide la <em>tasa de cambio instantánea</em> de esa función en un punto dado. Geométricamente, representa la <strong>pendiente de la recta tangente</strong> a la curva en ese punto.</p>
+
+    <div class="definition-box">
+      <div class="label">Definición formal (límite)</div>
+      <p>La derivada de f(x) en el punto x se define como:</p>
+      <div class="formula-big">f '(x) = lím<sub>h→0</sub> [f(x+h) − f(x)] / h</div>
+      <p style="font-size:0.9rem; color:var(--muted)">Esto es: cuánto cambia f cuando x cambia una cantidad infinitesimalmente pequeña h.</p>
+    </div>
+
+    <p>En la práctica, <strong>no necesitamos calcular ese límite cada vez</strong> — existen reglas algebraicas que lo hacen automáticamente.</p>
+
+    <div class="definition-box" style="border-color: var(--accent); margin-top:1rem;">
+      <div class="label" style="color:var(--accent)">Notaciones equivalentes</div>
+      <div class="formula-big" style="font-size:1.1rem; text-align:left; padding: 0.6rem 1rem;">
+        f '(x) &nbsp;=&nbsp; y' &nbsp;=&nbsp; dy/dx &nbsp;=&nbsp; df/dx &nbsp;=&nbsp; Df(x)
+      </div>
+      <p style="font-size:0.85rem; color:var(--muted)">Todas significan lo mismo: la derivada de f respecto a x.</p>
+    </div>
+  </div>
+
+  <div class="divider">· · ·</div>
+
+  <!-- SECCIÓN 2: TABLA DE DERIVADAS BÁSICAS -->
+  <div class="section">
+    <h2 class="section-title"><span class="section-num">II</span> Derivadas de funciones elementales</h2>
+    <p>Estas son las derivadas que debes memorizar — son la base de todo:</p>
+
+    <table class="deriv-table">
+      <thead>
+        <tr><th>f(x)</th><th>f '(x)</th><th>Ejemplo</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>c (constante)</td><td>0</td><td>(d/dx) 7 = 0</td></tr>
+        <tr><td>x</td><td>1</td><td>(d/dx) x = 1</td></tr>
+        <tr><td>xⁿ</td><td>n·xⁿ⁻¹</td><td>(d/dx) x⁵ = 5x⁴</td></tr>
+        <tr><td>eˣ</td><td>eˣ</td><td>(d/dx) eˣ = eˣ</td></tr>
+        <tr><td>aˣ</td><td>aˣ · ln(a)</td><td>(d/dx) 2ˣ = 2ˣ·ln2</td></tr>
+        <tr><td>ln(x)</td><td>1/x</td><td>(d/dx) ln(x) = 1/x</td></tr>
+        <tr><td>logₐ(x)</td><td>1/(x·ln a)</td><td>(d/dx) log₂x = 1/(x·ln2)</td></tr>
+        <tr><td>sin(x)</td><td>cos(x)</td><td>(d/dx) sin(x) = cos(x)</td></tr>
+        <tr><td>cos(x)</td><td>−sin(x)</td><td>(d/dx) cos(x) = −sin(x)</td></tr>
+        <tr><td>tan(x)</td><td>sec²(x)</td><td>(d/dx) tan(x) = sec²(x)</td></tr>
+        <tr><td>√x</td><td>1/(2√x)</td><td>(d/dx) √x = 1/(2√x)</td></tr>
+        <tr><td>1/x = x⁻¹</td><td>−1/x²</td><td>(d/dx) 1/x = −1/x²</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="divider">· · ·</div>
+
+  <!-- SECCIÓN 3: REGLAS -->
+  <div class="section">
+    <h2 class="section-title"><span class="section-num">III</span> Reglas de derivación</h2>
+    <p>Con estas reglas puedes derivar <em>cualquier</em> combinación de funciones:</p>
+
+    <div class="rules-grid">
+      <div class="rule-card">
+        <div class="rule-name">📌 Regla de la constante</div>
+        <div class="rule-formula">[c · f(x)]' = c · f '(x)</div>
+        <div class="rule-example">Las constantes salen como factor.<br>Ej: <span>[3x⁴]' = 3·4x³ = 12x³</span></div>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-name">➕ Regla de la suma / resta</div>
+        <div class="rule-formula">[f ± g]' = f ' ± g'</div>
+        <div class="rule-example">Se deriva término a término.<br>Ej: <span>[x³ + sin(x)]' = 3x² + cos(x)</span></div>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-name">✖️ Regla del producto</div>
+        <div class="rule-formula">[f · g]' = f '·g + f·g'</div>
+        <div class="rule-example">"Deriva la primera por la segunda, más la primera por la derivada de la segunda."<br>Ej: <span>[x²·sin(x)]' = 2x·sin(x) + x²·cos(x)</span></div>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-name">➗ Regla del cociente</div>
+        <div class="rule-formula">[f/g]' = (f '·g − f·g') / g²</div>
+        <div class="rule-example">"Numerador: deriva arriba por abajo menos arriba por deriva abajo. Denominador: abajo al cuadrado."<br>Ej: <span>[x/cos(x)]' = (cos(x) + x·sin(x)) / cos²(x)</span></div>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-name">⛓️ Regla de la cadena</div>
+        <div class="rule-formula">[f(g(x))]' = f '(g(x)) · g'(x)</div>
+        <div class="rule-example">"Deriva la función exterior dejando el interior intacto, luego multiplica por la derivada del interior."<br>Ej: <span>[sin(x²)]' = cos(x²)·2x</span></div>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-name">🔢 Regla de la potencia (generalizada)</div>
+        <div class="rule-formula">[u(x)ⁿ]' = n·u(x)ⁿ⁻¹ · u'(x)</div>
+        <div class="rule-example">Potencia cualquiera con función interior.<br>Ej: <span>[(x²+1)⁵]' = 5(x²+1)⁴·2x</span></div>
+      </div>
+    </div>
+
+    <!-- Tip mnemotecnico -->
+    <div class="definition-box" style="border-color: var(--green); margin-top: 1rem;">
+      <div class="label" style="color: var(--green)">💡 Truco para identificar qué regla usar</div>
+      <p style="font-size:0.93rem;">
+        <strong>1. ¿Hay suma o resta?</strong> → Regla de la suma (término a término).<br>
+        <strong>2. ¿Hay multiplicación de dos funciones?</strong> → Regla del producto.<br>
+        <strong>3. ¿Hay una función dentro de otra?</strong> → Regla de la cadena.<br>
+        <strong>4. ¿Hay una fracción de funciones?</strong> → Regla del cociente.<br>
+        A veces necesitas <em>combinar</em> más de una regla.
+      </p>
+    </div>
+  </div>
+
+  <div class="divider">· · ·</div>
+
+  <!-- SECCIÓN 4: EJEMPLOS RESUELTOS -->
+  <div class="section">
+    <h2 class="section-title"><span class="section-num">IV</span> Ejemplos resueltos paso a paso</h2>
+
+    <!-- Ejemplo 1 -->
+    <div class="solved-example">
+      <div class="ex-title">Ejemplo 1 — Regla de la potencia + suma</div>
+      <div class="ex-func">f(x) = 4x³ − 7x² + 2x − 5</div>
+      <div class="step"><div class="step-num">1</div><div class="step-text">Cada término se deriva por separado (regla de la suma).</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text"><code>d/dx [4x³] = 4·3x² = 12x²</code></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text"><code>d/dx [−7x²] = −7·2x = −14x</code></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text"><code>d/dx [2x] = 2</code> &nbsp;&nbsp; <code>d/dx [−5] = 0</code></div></div>
+      <div class="result-box">f '(x) = 12x² − 14x + 2</div>
+    </div>
+
+    <!-- Ejemplo 2 -->
+    <div class="solved-example">
+      <div class="ex-title">Ejemplo 2 — Regla del producto</div>
+      <div class="ex-func">f(x) = x³ · eˣ</div>
+      <div class="step"><div class="step-num">1</div><div class="step-text">Identificamos: <code>f = x³</code>, <code>g = eˣ</code>. Aplicamos <code>[f·g]' = f'·g + f·g'</code></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text"><code>f' = 3x²</code> &nbsp;&nbsp; <code>g' = eˣ</code></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text">Sustituimos: <code>3x²·eˣ + x³·eˣ</code></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text">Factorizamos <code>eˣ</code> (opcional pero elegante).</div></div>
+      <div class="result-box">f '(x) = eˣ(3x² + x³) = x²eˣ(3 + x)</div>
+    </div>
+
+    <!-- Ejemplo 3 -->
+    <div class="solved-example">
+      <div class="ex-title">Ejemplo 3 — Regla de la cadena</div>
+      <div class="ex-func">f(x) = sin(3x² + 1)</div>
+      <div class="step"><div class="step-num">1</div><div class="step-text">Función exterior: <code>sin(□)</code> con derivada <code>cos(□)</code>. Interior: <code>u = 3x² + 1</code>.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text">Derivada del interior: <code>u' = 6x</code></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text">Regla de la cadena: <code>cos(3x²+1) · 6x</code></div></div>
+      <div class="result-box">f '(x) = 6x · cos(3x² + 1)</div>
+    </div>
+
+    <!-- Ejemplo 4 -->
+    <div class="solved-example">
+      <div class="ex-title">Ejemplo 4 — Regla del cociente</div>
+      <div class="ex-func">f(x) = (x² + 1) / (x − 2)</div>
+      <div class="step"><div class="step-num">1</div><div class="step-text"><code>f = x²+1</code>, <code>g = x−2</code>. Fórmula: <code>(f'·g − f·g') / g²</code></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text"><code>f' = 2x</code> &nbsp;&nbsp; <code>g' = 1</code></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text">Numerador: <code>2x(x−2) − (x²+1)·1 = 2x²−4x−x²−1 = x²−4x−1</code></div></div>
+      <div class="result-box">f '(x) = (x² − 4x − 1) / (x − 2)²</div>
+    </div>
+  </div>
+
+  <div class="divider">· · ·</div>
+
+  <!-- SECCIÓN 5: 30 EJERCICIOS -->
+  <div class="section">
+    <h2 class="section-title"><span class="section-num">V</span> 30 Ejercicios para practicar</h2>
+
+    <div class="exercises-intro">
+      Haz clic en <strong>"Ver respuesta"</strong> solo después de intentar resolver el ejercicio por tu cuenta. El aprendizaje ocurre en el intento, no en la lectura.
+    </div>
+
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#27ae60"></div> Básico</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#e67e22"></div> Intermedio</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div> Avanzado</div>
+    </div>
+
+    <div class="ex-grid" id="exerciseGrid"></div>
+  </div>
+
+  <div class="footer">
+    Matemáticas · Cálculo Diferencial &nbsp;·&nbsp; <em>La derivada es la llave que abre el análisis.</em>
+  </div>
+</div>
+
+<script>
+const exercises = [
+  // BÁSICOS (1-10)
+  { n:1, diff:1, tag:"Potencia", func:"f(x) = x⁷", hint:"Regla de la potencia: baja el exponente", ans:"f '(x) = 7x⁶" },
+  { n:2, diff:1, tag:"Constante + potencia", func:"f(x) = 5x⁴ − 3x + 8", hint:"Derivar término a término", ans:"f '(x) = 20x³ − 3" },
+  { n:3, diff:1, tag:"Raíz cuadrada", func:"f(x) = √x", hint:"Reescribe como x^(1/2)", ans:"f '(x) = 1/(2√x)" },
+  { n:4, diff:1, tag:"Función exponencial", func:"f(x) = eˣ", hint:"La derivada de eˣ es ella misma", ans:"f '(x) = eˣ" },
+  { n:5, diff:1, tag:"Logaritmo natural", func:"f(x) = ln(x)", hint:"Fórmula directa", ans:"f '(x) = 1/x" },
+  { n:6, diff:1, tag:"Trigonométrica", func:"f(x) = sin(x) + cos(x)", hint:"Derivar cada término", ans:"f '(x) = cos(x) − sin(x)" },
+  { n:7, diff:1, tag:"Potencia negativa", func:"f(x) = 1/x³ = x⁻³", hint:"Reescribe con exponente negativo", ans:"f '(x) = −3/x⁴ = −3x⁻⁴" },
+  { n:8, diff:1, tag:"Polinomio", func:"f(x) = 6x⁵ − 4x³ + x² − 2", hint:"Término a término", ans:"f '(x) = 30x⁴ − 12x² + 2x" },
+  { n:9, diff:1, tag:"Raíz cúbica", func:"f(x) = x^(1/3)", hint:"Aplica la regla de la potencia", ans:"f '(x) = (1/3)x^(−2/3)" },
+  { n:10, diff:1, tag:"Tangente", func:"f(x) = tan(x)", hint:"Fórmula directa de la tabla", ans:"f '(x) = sec²(x)" },
+
+  // INTERMEDIOS (11-22)
+  { n:11, diff:2, tag:"Cadena simple", func:"f(x) = (3x + 2)⁵", hint:"Potencia con función interior: regla de la cadena", ans:"f '(x) = 5(3x+2)⁴ · 3 = 15(3x+2)⁴" },
+  { n:12, diff:2, tag:"Cadena — exp", func:"f(x) = e^(x²)", hint:"Exterior eˣ, interior x². Cadena.", ans:"f '(x) = 2x · e^(x²)" },
+  { n:13, diff:2, tag:"Cadena — trig", func:"f(x) = cos(5x)", hint:"Exterior cos, interior 5x", ans:"f '(x) = −5sin(5x)" },
+  { n:14, diff:2, tag:"Producto", func:"f(x) = x² · ln(x)", hint:"Producto: f=x², g=ln(x)", ans:"f '(x) = 2x·ln(x) + x²·(1/x) = 2x·ln(x) + x" },
+  { n:15, diff:2, tag:"Producto", func:"f(x) = x³ · sin(x)", hint:"Producto: f=x³, g=sin(x)", ans:"f '(x) = 3x²sin(x) + x³cos(x)" },
+  { n:16, diff:2, tag:"Cociente", func:"f(x) = (x + 1) / (x − 1)", hint:"Regla del cociente", ans:"f '(x) = −2/(x−1)²" },
+  { n:17, diff:2, tag:"Cadena — log", func:"f(x) = ln(x² + 4)", hint:"Interior u = x²+4, u' = 2x", ans:"f '(x) = 2x/(x²+4)" },
+  { n:18, diff:2, tag:"Cociente", func:"f(x) = sin(x)/x", hint:"Regla del cociente", ans:"f '(x) = (x·cos(x) − sin(x))/x²" },
+  { n:19, diff:2, tag:"Cadena — trig", func:"f(x) = sin²(x)", hint:"Reescribe como [sin(x)]², aplica cadena", ans:"f '(x) = 2sin(x)·cos(x) = sin(2x)" },
+  { n:20, diff:2, tag:"Prod + cadena", func:"f(x) = xeˣ", hint:"Producto: f=x, g=eˣ", ans:"f '(x) = eˣ + xeˣ = eˣ(1+x)" },
+  { n:21, diff:2, tag:"Potencia fraccionaria", func:"f(x) = (x² + 1)^(3/2)", hint:"Regla de la cadena con potencia fraccionaria", ans:"f '(x) = 3x√(x²+1)" },
+  { n:22, diff:2, tag:"Cadena — raíz", func:"f(x) = √(3x² − 2x)", hint:"Reescribe como (3x²−2x)^(1/2)", ans:"f '(x) = (6x−2)/(2√(3x²−2x)) = (3x−1)/√(3x²−2x)" },
+
+  // AVANZADOS (23-30)
+  { n:23, diff:3, tag:"Cadena doble", func:"f(x) = e^(sin(x))", hint:"Cadena doble: d/dx[eᵘ] = eᵘ·u'", ans:"f '(x) = cos(x)·e^(sin(x))" },
+  { n:24, diff:3, tag:"Prod + cadena", func:"f(x) = x²·e^(3x)", hint:"Producto con f=x², g=e^(3x) (cadena)", ans:"f '(x) = 2x·e^(3x) + 3x²e^(3x) = xe^(3x)(2+3x)" },
+  { n:25, diff:3, tag:"Cociente + cadena", func:"f(x) = ln(x) / x²", hint:"Cociente: f=ln(x), g=x²", ans:"f '(x) = (1 − 2ln(x)) / x³" },
+  { n:26, diff:3, tag:"Cadena triple", func:"f(x) = ln(sin(x²))", hint:"Tres capas: ln → sin → x²", ans:"f '(x) = 2x·cos(x²)/sin(x²) = 2x·cot(x²)" },
+  { n:27, diff:3, tag:"Prod + trig", func:"f(x) = sin(x)·cos(x)", hint:"Producto de dos trig (o usa identidad sin(2x)/2)", ans:"f '(x) = cos²(x) − sin²(x) = cos(2x)" },
+  { n:28, diff:3, tag:"Potencia de cociente", func:"f(x) = (x²+1)⁴ / (2x−1)³", hint:"Cociente donde cada parte requiere cadena", ans:"f '(x) = [8x(2x−1)³(x²+1)³ − 6(x²+1)⁴(2x−1)²] / (2x−1)⁶" },
+  { n:29, diff:3, tag:"Log de producto", func:"f(x) = ln(x · √(x+1))", hint:"Simplifica primero: ln(x) + ½ln(x+1)", ans:"f '(x) = 1/x + 1/(2(x+1))" },
+  { n:30, diff:3, tag:"Cadena + producto", func:"f(x) = x · sin(e^x)", hint:"Producto: f=x, g=sin(eˣ) — g necesita cadena doble", ans:"f '(x) = sin(eˣ) + x·eˣ·cos(eˣ)" },
+];
+
+const grid = document.getElementById('exerciseGrid');
+
+exercises.forEach(ex => {
+  const div = document.createElement('div');
+  div.className = `exercise diff-${ex.diff}`;
+  div.innerHTML = `
+    <div class="ex-header">
+      <span class="ex-num">Ej. ${ex.n.toString().padStart(2,'0')}</span>
+      <span class="ex-tag">${ex.tag}</span>
+    </div>
+    <div class="ex-func-display">${ex.func}</div>
+    <div class="ex-hint">💬 ${ex.hint}</div>
+    <button class="toggle-btn" onclick="toggleAnswer(this)">Ver respuesta</button>
+    <div class="answer">✓ ${ex.ans}</div>
+  `;
+  grid.appendChild(div);
+});
+
+function toggleAnswer(btn) {
+  const ans = btn.nextElementSibling;
+  const showing = ans.classList.toggle('show');
+  btn.textContent = showing ? 'Ocultar respuesta' : 'Ver respuesta';
+}
+</script>
+</body>
+</html>
